@@ -45,14 +45,14 @@ export default function Filter({ filter, setFilter }) {
 
     return (
         <div className='relative hidden lg:block right-0 px-2 bg-white'>
-            <div className="w-[300px] h-[85vh] overflow-x-hidden overflow-y-scroll py-2">
+            <div className="w-[300px] h-[85vh] overflow-x-hidden overflow-y-scroll py-2 px-2">
                 {opened === 'main' && <div className="flex flex-col gap-y-3 w-full">
                     <button className="w-full flex flex-row justify-between gap-x-2 py-1 px-1 hover:bg-zinc-300 rounded transition-all cursor-pointer" id='genres' onClick={(e) => changeOpened(e)}>
                         <span className='font-semibold' id='genres'>Genres</span>
                         <span className="flex flex-row items-center" id='genres'>
                             <span className="text-xs line-clamp-1 max-w-[100%] text-zinc-400" id='genres'>
                                 {
-                                    filter.genres ? filter.genres.join(', ') : 'Any'
+                                    filter.genres && filter.genres?.length > 0 ? filter.genres.join(', ') : 'Any'
                                 }
                             </span>
                             <span className="material-symbols-outlined" id='genres'>chevron_right</span>
@@ -63,7 +63,7 @@ export default function Filter({ filter, setFilter }) {
                         <span className="flex flex-row items-center" id='themes'>
                             <span className="text-xs line-clamp-1 max-w-[100%] text-zinc-400" id='themes'>
                                 {
-                                    filter.themes ? filter.themes.join(', ') : 'Any'
+                                    filter.themes && filter.themes?.length > 0 ? filter.themes.join(', ') : 'Any'
                                 }
                             </span>
                             <span className="material-symbols-outlined" id='themes'>chevron_right</span>
@@ -153,7 +153,7 @@ export default function Filter({ filter, setFilter }) {
                     </div>
                 }
             </div>
-            <div className='flex flex-row gap-x-2 font-semibold bg-white py-2'>
+            <div className='flex flex-row gap-x-2 font-semibold bg-white py-2 px-2'>
                 <button className='px-5 py-1 bg-zinc-300 w-1/2'>Reset</button>
                 <button className='w-1/2 bg-green-500 text-white'>Confirm</button>
             </div>

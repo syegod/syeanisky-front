@@ -2,7 +2,7 @@ import React from 'react'
 
 export default function Card({ obj }) {
     return (
-        <div className='sm:w-[20%] xl:w-[19%] z-50 cursor-pointer'>
+        <div className='w-[32%] sm:w-[24%] lg:w-[23%] xl:w-[19%] z-50 cursor-pointer'>
             <div className='w-full h-full relative drop-shadow-xl'>
                 <div className='bg-gradient-to-t from-black via-transparent to-transparent opacity-70 absolute w-full h-full top-0 left-0 z-20 rounded'/>
                 <img src={obj?.images?.jpg?.image_url} alt="anime_jpg" className='w-full h-full object-cover rounded' />
