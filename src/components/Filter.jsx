@@ -3,72 +3,36 @@ import Checkbox from './features/Checkbox';
 import axios from 'axios';
 
 export default function Filter({ filter, setFilter }) {
-    const [genres, setGenres] = useState([]);
-    const [themes, setThemes] = useState([]);
+    const [allgenres, setAllGenres] = useState([]);
     const [opened, setOpened] = useState('main');
 
     useEffect(() => {
         async function getGenres() {
             try {
-                const response = await axios.get('https://api.jikan.moe/v4/genres/anime', {
-                    params: {
-                        filter: 'genres'
-                    }
-                });
-                setGenres(response.data.data)
+                const response = await axios.get('https://api.jikan.moe/v4/genres/anime');
+                setAllGenres(response.data.data)
             } catch (err) {
                 console.log(err);
             }
         }
         getGenres();
-        async function getThemes() {
-            try {
-                const response = await axios.get('https://api.jikan.moe/v4/genres/anime', {
-                    params: {
-                        filter: 'themes'
-                    }
-                });
-                setThemes(response.data.data)
-            } catch (err) {
-                console.log(err);
-            }
-        }
-        getThemes();
     }, [])
 
 
     function changeOpened(e) {
-        // console.log(e.target.id);
-        if(opened === 'main') return setOpened(e.target.id);
-        if(opened === e.target.id) return setOpened('main');
+        console.log(filter);
+        if (opened === 'main') return setOpened(e.target.id);
+        if (opened === e.target.id) return setOpened('main');
     }
 
     return (
         <div className='relative hidden lg:block right-0 px-2 bg-white'>
-            <div className="w-[300px] h-[85vh] overflow-x-hidden overflow-y-scroll py-2 px-2">
+            <div className="w-[300px] h-[85vh] overflow-x-hidden overflow-y-scroll pb-3 px-2">
                 {opened === 'main' && <div className="flex flex-col gap-y-3 w-full">
                     <button className="w-full flex flex-row justify-between gap-x-2 py-1 px-1 hover:bg-zinc-300 rounded transition-all cursor-pointer" id='genres' onClick={(e) => changeOpened(e)}>
                         <span className='font-semibold' id='genres'>Genres</span>
-                        <span className="flex flex-row items-center" id='genres'>
-                            <span className="text-xs line-clamp-1 max-w-[100%] text-zinc-400" id='genres'>
-                                {
-                                    filter.genres && filter.genres?.length > 0 ? filter.genres.join(', ') : 'Any'
-                                }
-                            </span>
-                            <span className="material-symbols-outlined" id='genres'>chevron_right</span>
-                        </span>
+                        <span className="material-symbols-outlined" id='genres'>chevron_right</span>
                     </button>
-                    <div className="w-full flex flex-row justify-between gap-x-2 py-1 px-1 hover:bg-zinc-300 rounded transition-all cursor-pointer" id='themes' onClick={e => changeOpened(e)}>
-                        <span className='font-semibold' id='themes'>Themes</span>
-                        <span className="flex flex-row items-center" id='themes'>
-                            <span className="text-xs line-clamp-1 max-w-[100%] text-zinc-400" id='themes'>
-                                {
-                                    filter.themes && filter.themes?.length > 0 ? filter.themes.join(', ') : 'Any'
-                                }
-                            </span>
-                            <span className="material-symbols-outlined" id='themes'>chevron_right</span>
-                        </span>
-                    </div>
                     <div className="w-full flex flex-col py-1 px-1 gap-y-1">
                         <span className='font-semibold'>Score</span>
                         <div className='flex flex-row gap-x-3 items-center justify-between'>
@@ -140,22 +104,13 @@ export default function Filter({ filter, setFilter }) {
                             <span className='font-semibold' id='genres'>Genres</span>
                             <span className="material-symbols-outlined" id='genres'>chevron_left</span>
                         </button>
-                        {genres && genres.map(e => <Checkbox label={e.name} />)}
-                    </div>
-                }
-                {opened === 'themes' &&
-                    <div className='flex flex-col gap-y-3'>
-                        <button className="w-full flex flex-row justify-between gap-x-2 py-1 px-1 hover:bg-zinc-300 rounded transition-all cursor-pointer" id='themes' onClick={e => changeOpened(e)}>
-                            <span className='font-semibold' id='themes'>Themes</span>
-                            <span className="material-symbols-outlined" id='themes'>chevron_left</span>
-                        </button>
-                        {themes && themes.map(e => <Checkbox label={e.name} />)}
+                        {allgenres && allgenres.sort((a, b) => a.name.localeCompare(b.name)).map(e => <Checkbox label={e.name} value={e.mal_id} type={2} />)}
                     </div>
                 }
             </div>
-            <div className='flex flex-row gap-x-2 font-semibold bg-white py-2 px-2'>
-                <button className='px-5 py-1 bg-zinc-300 w-1/2'>Reset</button>
-                <button className='w-1/2 bg-green-500 text-white'>Confirm</button>
+            <div className='flex flex-row gap-x-2 font-semibold bg-white py-2 px-2 overflow-hidden'>
+                <button className='px-5 py-1 bg-zinc-300 w-1/2 rounded'>Reset</button>
+                <button className='w-1/2 bg-zinc-900 text-white rounded'>Confirm</button>
             </div>
         </div>
     )

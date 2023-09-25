@@ -1,88 +1,47 @@
+import { Routes, Route } from "react-router";
+import Main from "./pages/Main";
+import Anime from "./pages/Anime";
+import { AuthContext } from "./context";
 import { useEffect, useState } from "react";
-import Card from "./components/Card";
-import axios from 'axios';
-import Filter from "./components/Filter";
+import Layout from './components/Layout';
+import axios from "./axios";
+import Login from "./pages/Login";
+import Register from "./pages/Register";
 
 function App() {
-    const [pagination, setPagination] = useState(null);
-    const [data, setData] = useState(null);
-    const [search, setSearch] = useState(null);
-    const [error, setError] = useState(null);
-    const [filter, setFilter] = useState({
-        genres: [],
-        themes: []
-    });
-
-    async function getData(q=null) {
-        try {
-            const response = await axios.get('https://api.jikan.moe/v4/anime',
-                {
-                    params: {
-                        'q': q,
-                        'order_by': 'popularity',
-                    }
-                });
-            setPagination(response?.data?.pagination);
-            setData(response?.data?.data);
-            return;
-        } catch (err) {
-            setError('Some error occured.');
-            return;
-        }
-    }
-
-    async function handleSearch(e){
-        setTimeout(() => getData(e.target.value), 500);
-    }
-
-    async function addData(q=null) {
-        try {
-            const response = await axios.get('https://api.jikan.moe/v4/anime',
-                {
-                    params: {
-                        'q': q,
-                        'order_by': 'popularity',
-                        'page': pagination && pagination?.has_next_page ? pagination.current_page + 1 : 1
-                    }
-                });
-            setPagination(response?.data?.pagination);
-            const arr = [].concat(data).concat(response?.data?.data);
-            setData(arr);
-            return;
-        } catch (err) {
-            setError('Some error occured.');
-            return;
-        }
-    }
-
+    const [udata, setUData] = useState(null);
+    const [token, setToken] = useState(null);
+    const [isAuth, setIsAuth] = useState(false);
+    const [loading, setLoading] = useState(false);
     useEffect(() => {
-        getData();
-    }, [])
-
+        async function getUserData() {
+            try {
+                setLoading(true);
+                const res = await axios.get('/auth/get-me');
+                setUData(res.data?.userData);
+                setToken(res.data?.token);
+                setIsAuth(!!res.data?.token && !!res.data?.userData)
+                setLoading(false);
+                return;
+            } catch (err) {
+                console.log(err);
+                setLoading(false);
+            }    
+        }
+        getUserData();
+    }, []);
     return (
-        <div className="lg:container lg:px-32 mx-auto my-5 ">
-            <div className="relative flex flex-row gap-x-10 px-2">
-                <div className="lg:w-[80%] flex flex-col gap-y-5 mx-auto ">
-                    <div className='text-zinc-800 flex flex-row w-full divide-x divide-zinc-300 border rounded border-zinc-300'>
-                        <input type="text" className='border-0 px-3 outline-none w-full text-base rounded-l' placeholder='Search for title...' onChange={(e) => handleSearch(e)}/>
-                        <button className='px-2 bg-white outline-none flex items-center rounded-r'><i className="material-symbols-outlined">search</i></button>
-                    </div>
-                    <div className="flex flex-wrap w-full gap-x-1 lg:gap-x-2 gap-y-5 justify-between">
-                        {data && !error &&
-                            data.map((e, i) => {
-                                return <Card obj={e} key={i} />
-                            })}
-                    </div>
-                    <div className="w-full bg-zinc-200 text-center py-3 items-center flex flex-row justify-center group cursor-pointer select-none" onClick={e => addData()}>
-                        <span className="">Load more</span>
-                        <span className="material-symbols-outlined font-bold group-hover:animate-spin">
-                            refresh
-                        </span>
-                    </div>
-                </div>
-                <Filter filter={filter} setFilter={setFilter} />
-            </div>
-        </div>
+        <AuthContext.Provider value={{
+            userData: udata, token, isAuth, state: loading ? 'loading' : 'loaded'}}>
+            <Layout>
+                <Routes>
+                    <Route path="*" element={<Main />} />
+                    <Route path="/anime/:id" element={<Anime />} />
+                    <Route path="/login" element={<Login />} />
+                    <Route path="/register" element={<Register />} />
+                </Routes>
+            </Layout>
+        </AuthContext.Provider>
     );
 }
 
