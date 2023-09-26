@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import Card from "../components/Card";
+import Card from "../components/features/Card";
 import axios from 'axios';
 import Filter from "../components/Filter";
 
@@ -49,7 +49,7 @@ export default function Main() {
 
     useEffect(() => {
         setLoading(true);
-        setTimeout(() => getData(query), 500);
+        setTimeout(async () => await getData(query), 500);
         setLoading(false);
     }, [])
 

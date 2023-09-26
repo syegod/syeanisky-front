@@ -31,7 +31,7 @@ export default function Anime() {
         <div className='bg-zinc-200 w-full min-h-[100vh]'>
             <div className='xl:w-1/2 mx-auto py-10 h-full relative'>
                 {anime && !loading ?
-                    <div className='flex flex-row gap-x-10'>
+                    <div className='flex flex-row gap-x-5'>
                         <div className='lg:w-[35%] h-full flex flex-col gap-y-5'>
                             <div className='w-full'>
                                 <img src={anime.images?.jpg?.large_image_url} alt="" className='w-full h-full object-cover rounded' />
@@ -83,7 +83,7 @@ export default function Anime() {
                                 </div>
                             </div>
                         </div>
-                        <div className='lg:w-full h-full rounded p-2 flex flex-col gap-y-5'>
+                        <div className='lg:w-full h-full rounded flex flex-col gap-y-5'>
                             <div className='flex flex-row justify-between bg-white p-2'>
                                 <div className='flex flex-col'>
                                     <span className='text-2xl font-semibold'>{anime?.title_english}</span>
@@ -100,7 +100,7 @@ export default function Anime() {
                                     {anime.genres?.length > 0 && anime.genres.map(e => <span className='border px-2 rounded-sm cursor-pointer text-zinc-500'>{e?.name}</span>)}
                                     {anime.themes?.length > 0 && anime.themes.map(e => <span className='border px-2 rounded-sm cursor-pointer text-zinc-500'>{e?.name}</span>)}
                                 </div>
-                                <div className='flex flex-wrap gap-x-10 gap-y-5'>
+                                <div className='flex flex-wrap gap-x-[5%] gap-y-5'>
                                     {anime_characters?.length > 0 && anime_characters.map(e => e.role === "Main" && <CharacterCard char={e.character} />)}
                                 </div>
                             </div>
