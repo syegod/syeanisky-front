@@ -7,6 +7,7 @@ import Layout from './components/Layout';
 import axios from "./axios";
 import Login from "./pages/Login";
 import Register from "./pages/Register";
+import Profile from "./pages/Profile";
 
 function App() {
     const [udata, setUData] = useState(null);
@@ -39,6 +40,7 @@ function App() {
                     <Route path="/anime/:id" element={<Anime />} />
                     <Route path="/login" element={<Login />} />
                     <Route path="/register" element={<Register />} />
+                    <Route path="/profile" element={<Profile />} />
                 </Routes>
             </Layout>
         </AuthContext.Provider>

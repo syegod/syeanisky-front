@@ -27,7 +27,8 @@ export default function Register() {
         }
     }
 
-    if(isAuth) return window.location = '/';
+    if (isAuth && localStorage.getItem('token')) return window.location = '/';
+
 
     return (
         <div className='w-full'>

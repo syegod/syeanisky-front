@@ -18,7 +18,7 @@ export default function UserHeadLinks() {
                 </button>
                     :
                     <div className='flex flex-row gap-x-5 md:gap-x-10 items-center font-bold'>
-                        <Link to={'/user/' + userData?._id} className='underline underline-offset-2'>{userData?.username}</Link>
+                        <Link to={'/profile'} className='underline underline-offset-2'>{userData?.username}</Link>
                         <button className="material-symbols-outlined text-2xl font-extrabold" onClick={() => handleLogout()}>
                             logout
                         </button>
