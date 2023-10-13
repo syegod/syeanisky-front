@@ -39,7 +39,7 @@ export default function Anime() {
                             {/* <button className='px-3 py-1 bg-green-600 text-white rounded' disabled>
                                 Log in to add this anime to your lists
                             </button> */}
-                            <AddToList />
+                            <AddToList anime={anime}/>
                             <div className='bg-white py-3 px-2 flex flex-col gap-y-2 rounded-md w-full'>
                                 <div className='flex flex-col'>
                                     <span className='text-zinc-400'>Type</span>
@@ -51,27 +51,27 @@ export default function Anime() {
                                 </div>
                                 <div className='flex flex-col'>
                                     <span className='text-zinc-400'>Airing</span>
-                                    <span>{anime?.aired?.string}</span>
+                                    <span>{anime?.aired?.string || '-'}</span>
                                 </div>
                                 {anime?.airing && <div className='flex flex-col'>
                                     <span className='text-zinc-400'>Broadcast</span>
-                                    <span>{anime?.broadcast?.string}</span>
+                                    <span>{anime?.broadcast?.string || '-'}</span>
                                 </div>}
                                 <div className='flex flex-col'>
                                     <span className='text-zinc-400'>Episodes</span>
-                                    <span>{anime?.episodes}</span>
+                                    <span>{anime?.episodes || '-'}</span>
                                 </div>
                                 <div className='flex flex-col'>
                                     <span className='text-zinc-400'>Status</span>
-                                    <span>{anime?.status}</span>
+                                    <span>{anime?.status || '-'}</span>
                                 </div>
                                 <div className='flex flex-col'>
                                     <span className='text-zinc-400'>Source</span>
-                                    <span>{anime?.source}</span>
+                                    <span>{anime?.source || '-'}</span>
                                 </div>
                                 <div className='flex flex-col'>
                                     <span className='text-zinc-400'>Rating</span>
-                                    <span>{anime?.rating}</span>
+                                    <span>{anime?.rating || '-'}</span>
                                 </div>
                                 <div className='flex flex-col'>
                                     <span className='text-zinc-400'>Studios</span>
