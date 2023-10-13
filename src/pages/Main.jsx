@@ -2,10 +2,12 @@ import { useEffect, useState } from "react";
 import Card from "../components/features/Card";
 import axios from 'axios';
 import Filter from "../components/Filter";
+import { useLocation } from "react-router";
 
 
 export default function Main() {
     const [pagination, setPagination] = useState(null);
+    const queryParams = new URLSearchParams(useLocation().search);
     const [data, setData] = useState([]);
     const [query, setQuery] = useState(null);
     const [error, setError] = useState(null);

@@ -4,6 +4,7 @@ import axios from 'axios';
 
 export default function Filter({ filter, setFilter }) {
     const [allgenres, setAllGenres] = useState([]);
+    const [queryParams, setQueryParams] = useState([]);
     const [opened, setOpened] = useState('main');
 
     useEffect(() => {
@@ -17,7 +18,6 @@ export default function Filter({ filter, setFilter }) {
         }
         getGenres();
     }, [])
-
 
     function changeOpened(e) {
         console.log(filter);
