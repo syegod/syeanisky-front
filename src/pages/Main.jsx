@@ -12,10 +12,6 @@ export default function Main() {
     const [query, setQuery] = useState(null);
     const [error, setError] = useState(null);
     const [loading, setLoading] = useState(false);
-    const [filter, setFilter] = useState({
-        genres: new Map(),
-    });
-
 
     async function getData(q = null, asNew = false) {
         try {
@@ -28,6 +24,8 @@ export default function Main() {
                     params: {
                         'q': q,
                         'order_by': 'score',
+                        'genres': queryParams.get('genres_include') || null,
+                        'genres_exclude': queryParams.get('genres_exclude') || null,
                         'sort': 'desc',
                         'page': asNew ? 1 : nextPage
                     }
@@ -87,7 +85,7 @@ export default function Main() {
                             </span>
                         </div>}
                 </div>
-                <Filter filter={filter} setFilter={setFilter} />
+                <Filter />
             </div>
         </div>
     )

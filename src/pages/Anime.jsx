@@ -86,7 +86,7 @@ export default function Anime() {
                         <div className='lg:w-full h-full rounded flex flex-col gap-y-5'>
                             <div className='flex flex-row justify-between bg-white p-2'>
                                 <div className='flex flex-col'>
-                                    <span className='text-2xl font-semibold'>{anime?.title_english}</span>
+                                    <span className='text-2xl font-semibold'>{anime?.title_english || anime?.title}</span>
                                     <span className='text-zinc-400'>{anime?.title}</span>
                                 </div>
                                 <div className='flex flex-col text-end'>

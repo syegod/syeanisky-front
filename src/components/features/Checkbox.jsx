@@ -1,19 +1,27 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 
-export default function Checkbox({ label, value, type = 1 }) {
+export default function Checkbox({ label, value, type = 1, handleChange = null, selected = null }) {
     const [state, setState] = useState(null);
+
+    useEffect(() => {
+        setState(selected);
+    }, [])
 
     const changeState = () => {
         console.log(label);
         if (state === 'enabled' && type === 2) {
+            if(handleChange)handleChange(value, 'exclude');
             return setState('disabled');
-        } else if(state === 'enabled' && type === 1){
+        } else if (state === 'enabled' && type === 1) {
+            if(handleChange)handleChange(value, 'disable');
             return setState(null);
         }
         if (state === 'disabled') {
+            if(handleChange)handleChange(value, 'disable');
             return setState(null);
         }
         if (state === null) {
+            if(handleChange)handleChange(value, 'include');
             return setState('enabled');
         }
     }
