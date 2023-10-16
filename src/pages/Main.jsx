@@ -26,6 +26,10 @@ export default function Main() {
                         'order_by': 'score',
                         'genres': queryParams.get('genres_include') || null,
                         'genres_exclude': queryParams.get('genres_exclude') || null,
+                        'min_score': queryParams.get('min_score') || 0,
+                        'max_score': queryParams.get('max_score') || 10,
+                        'type': queryParams.get('format') || null,
+                        'status': queryParams.get('status') || null,
                         'sort': 'desc',
                         'page': asNew ? 1 : nextPage
                     }
@@ -61,7 +65,7 @@ export default function Main() {
                     <div className='text-zinc-800 flex flex-row w-full divide-x divide-zinc-300 border rounded border-zinc-300'>
                         <input type="text" className='border-0 px-3 outline-none w-full text-base rounded-l' placeholder='Search for title...' onChange={(e) => handleSearch(e)} />
                     </div>
-                    <div className="flex flex-wrap w-full gap-x-1 lg:gap-x-2 gap-y-5 justify-between">
+                    <div className="flex flex-wrap w-full gap-x-1 lg:gap-x-2 gap-y-5 justify-start">
                         {data.length < 1 && loading &&
                             <div className="text-zinc-600 w-full mt-10 text-2xl text-center">
                                 Nothing found

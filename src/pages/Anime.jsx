@@ -85,13 +85,14 @@ export default function Anime() {
                         </div>
                         <div className='lg:w-full h-full rounded flex flex-col gap-y-5'>
                             <div className='flex flex-row justify-between bg-white p-2'>
-                                <div className='flex flex-col'>
+                                <div className='flex flex-col max-w-[75%] justify-between'>
                                     <span className='text-2xl font-semibold'>{anime?.title_english || anime?.title}</span>
                                     <span className='text-zinc-400'>{anime?.title}</span>
                                 </div>
                                 <div className='flex flex-col text-end'>
                                     <span className='text-2xl font-bold'>{anime?.score}</span>
                                     <span className='text-lg'>Rank: <span className='font-semibold'>{anime?.popularity}</span></span>
+                                    <span className='text-lg'>Scored by: <span className='font-semibold'>{anime?.scored_by}</span></span>
                                 </div>
                             </div>
                             <div className='flex flex-col bg-white p-3 rounded gap-y-5'>

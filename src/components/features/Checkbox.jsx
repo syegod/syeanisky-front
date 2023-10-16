@@ -8,7 +8,6 @@ export default function Checkbox({ label, value, type = 1, handleChange = null, 
     }, [])
 
     const changeState = () => {
-        console.log(label);
         if (state === 'enabled' && type === 2) {
             if(handleChange)handleChange(value, 'exclude');
             return setState('disabled');
@@ -30,7 +29,7 @@ export default function Checkbox({ label, value, type = 1, handleChange = null, 
         <div className='flex flex-row gap-x-3 items-center cursor-pointer select-none' onClick={() => changeState()}>
             <div className={`w-5 h-5 border-gray-300 ${!state && 'border'} rounded text-white`} id={label}>
                 {state === 'enabled' &&
-                    <div className='w-full h-full bg-green-400 flex justify-center items-center rounded'>
+                    <div className='w-full h-full bg-zinc-900 flex justify-center items-center rounded'>
                         <span className="material-symbols-outlined text-xl">
                             done
                         </span>
