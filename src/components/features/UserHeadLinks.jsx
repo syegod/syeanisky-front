@@ -6,8 +6,10 @@ export default function UserHeadLinks() {
     const { isAuth, userData, state } = useContext(AuthContext);
 
     const handleLogout = () => {
-        localStorage.removeItem('token');
-        return window.location = '/';
+        if (window.confirm('Are you sure?')) {
+            localStorage.removeItem('token');
+            return window.location = '/';
+        }
     }
 
     if (isAuth || state === 'loading') {
@@ -28,7 +30,7 @@ export default function UserHeadLinks() {
         )
     } else {
         return (
-            <div className='flex flex-row gap-x-5 text-zinc-900 font-bold text-lg uppercase'>
+            <div className='flex flex-row gap-x-5 text-zinc-900 font-semibold text-lg'>
                 <Link to={'/login'} className='px-2 py-0.5 bg-white rounded'>Login</Link>
                 <Link to={'/register'} className='px-2 py-0.5 bg-white rounded'>Register</Link>
             </div>

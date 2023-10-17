@@ -1,13 +1,15 @@
 import axios from 'axios'
-import React, { useEffect, useState } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 import { useParams } from 'react-router'
 import CharacterCard from '../components/features/CharacterCard';
 import RelationCard from '../components/features/RelationCard';
 import AddToList from '../components/features/AddToList';
+import { AuthContext } from '../context';
 
 export default function Anime() {
     const { id } = useParams()
     const [anime, setAnime] = useState();
+    const { isAuth } = useContext(AuthContext);
     const [anime_characters, setAnimeCharacters] = useState();
     const [loading, setLoading] = useState(false);
 
@@ -29,7 +31,7 @@ export default function Anime() {
     }, [])
     return (
         <div className='bg-zinc-200 w-full min-h-[100vh]'>
-            <div className='xl:w-1/2 mx-auto py-10 h-full relative'>
+            <div className='xl:w-[60%] mx-auto py-10 h-full relative'>
                 {anime && !loading ?
                     <div className='flex flex-row gap-x-5'>
                         <div className='lg:w-[35%] h-full flex flex-col gap-y-5'>
@@ -39,7 +41,7 @@ export default function Anime() {
                             {/* <button className='px-3 py-1 bg-green-600 text-white rounded' disabled>
                                 Log in to add this anime to your lists
                             </button> */}
-                            <AddToList anime={anime}/>
+                            {isAuth && <AddToList anime={anime} />}
                             <div className='bg-white py-3 px-2 flex flex-col gap-y-2 rounded-md w-full'>
                                 <div className='flex flex-col'>
                                     <span className='text-zinc-400'>Type</span>
@@ -98,8 +100,8 @@ export default function Anime() {
                             <div className='flex flex-col bg-white p-3 rounded gap-y-5'>
                                 <span dangerouslySetInnerHTML={{ __html: anime.synopsis?.replace(/\n/g, "<br>").replace("<br><br>[Written by MAL Rewrite]", '') }}></span>
                                 <div className='flex flex-wrap gap-x-3 gap-y-2'>
-                                    {anime.genres?.length > 0 && anime.genres.map(e => <span className='border px-2 rounded-sm cursor-pointer text-zinc-500'>{e?.name}</span>)}
-                                    {anime.themes?.length > 0 && anime.themes.map(e => <span className='border px-2 rounded-sm cursor-pointer text-zinc-500'>{e?.name}</span>)}
+                                    {anime.genres?.length > 0 && anime.genres.map(e => <a href={`/?genres_include=${e.mal_id}`} className='border px-2 rounded-sm cursor-pointer text-zinc-500'>{e?.name}</a>)}
+                                    {anime.themes?.length > 0 && anime.themes.map(e => <a href={`/?genres_include=${e.mal_id}`} className='border px-2 rounded-sm cursor-pointer text-zinc-500'>{e?.name}</a>)}
                                 </div>
                                 <div className='flex flex-wrap gap-x-[5%] gap-y-5'>
                                     {anime_characters?.length > 0 && anime_characters.map(e => e.role === "Main" && <CharacterCard char={e.character} />)}
