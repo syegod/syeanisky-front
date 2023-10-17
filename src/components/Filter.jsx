@@ -2,17 +2,18 @@ import React, { useEffect, useState } from 'react';
 import { useLocation } from 'react-router-dom';
 import Checkbox from './features/Checkbox';
 import axios from 'axios';
+import {Slider} from '@mui/material'
 
 export default function Filter({ }) {
     const queryParams = new URLSearchParams(useLocation().search);
     const [allgenres, setAllGenres] = useState([]);
     const [filter, setFilter] = useState({
         genres: new Map(),
-        min_score: 0,
+        min_score: 5,
         max_score: 10,
         format: '',
         status: '',
-        year_from: 0,
+        year_from: 2000,
         year_to: 2030,
         your_lists: ''
     });
@@ -30,7 +31,7 @@ export default function Filter({ }) {
         const status = queryParams.get('status') || '';
         const min_score = queryParams.get('min_score') || 0;
         const max_score = queryParams.get('max_score') || 10;
-        const year_from = queryParams.get('year_from') || 0;
+        const year_from = queryParams.get('year_from') || 2000;
         const year_to = queryParams.get('year_to') || 2030;
         setFilter({ ...filter, format, status, year_from, year_to, min_score, max_score });
         for (var i of genres_include) {
@@ -76,19 +77,50 @@ export default function Filter({ }) {
         setFilter({ ...filter, [e.target.name]: e.target.value });
     }
 
+    // function handleScore(e) {
+    //     const value = e.target.value;
+    //     const name = e.target.name;
+
+    //     // Parse the input value as a number to ensure correct comparison
+    //     const numericValue = parseFloat(value);
+
+    //     // Create a new filter object based on the current state
+    //     let updatedFilter = { ...filter, [name]: numericValue };
+
+    //     if (name === 'min_score' && numericValue >= 10) {
+    //         updatedFilter.max_score = 10;
+    //     } else if (name === 'max_score' && numericValue <= 0) {
+    //         updatedFilter.min_score = 0;
+    //         updatedFilter.max_score = 1;
+    //     } else if (name === 'min_score' && numericValue > updatedFilter.max_score) {
+    //         updatedFilter.max_score = numericValue;
+    //     } else if (name === 'max_score' && numericValue < updatedFilter.min_score) {
+    //         updatedFilter.min_score = numericValue;
+    //     }
+
+    //     // Update the filter state with the new filter object
+    //     setFilter(updatedFilter);
+    // }
+
     function handleScore(e) {
+        
+        // setFilter({...filter, [e.target.name]});
+    }
+
+    function handleYear(e) {
         const value = e.target.value;
         const name = e.target.name;
-        setFilter({ ...filter, [name]: value });
-        if (name === 'min_score' && value >= 10){
-            setFilter({...filter, min_score: 9, max_score: 10});
-        } else if (name === 'max_score' && value <= 0){
-            setFilter({...filter, min_score: 0, max_score: 1});
-        } else if (name === 'min_score' && value >= filter.max_score){
-            setFilter({...filter, min_score:value, max_score: value});
-        } else if(name === 'max_score' && value <= filter.min_score){
-            setFilter({...filter, max_score:value, min_score: value});
-        }
+        setFilter(prevFilter => {
+            const updatedFilter = { ...prevFilter, [name]: value };
+            if (name === 'year_from' && value > updatedFilter.year_to) {
+                console.log(filter);
+                updatedFilter.year_to = value;
+            } else if (name === 'year_to' && value < updatedFilter.year_from) {
+                updatedFilter.year_from = value;
+            }
+
+            return updatedFilter;
+        });
     }
 
     function handleConfirm() {
@@ -99,8 +131,9 @@ export default function Filter({ }) {
             else genres_exclude.push(i[0]);
         }
         const url = `/?genres_include=${genres_include.join(',')}&genres_exclude=${genres_exclude.join(',')}&format=${filter.format || ''}&status=${filter.status || ''}&min_score=${filter.min_score || 0}&max_score=${filter.max_score || 10}&year_from=${filter.year_from || null}&year_to=${filter.year_to || null}`
+        console.log(filter);
         // console.log(url);   
-        window.location = url;
+        // window.location = url;
     }
 
     function changeOpened(e) {
@@ -119,19 +152,25 @@ export default function Filter({ }) {
                     <div className="w-full flex flex-col py-1 px-1 gap-y-1">
                         <span className='font-semibold'>Score</span>
                         <div className='flex flex-row gap-x-3 items-center justify-between'>
-                            <input type="number" className='border border-zinc-300 py-0.5 px-1 w-[40%] outline-none rounded' name='min_score' placeholder='Min...' value={filter.min_score} onChange={e => handleScore(e)} />
+                            {/* <input type="number" className='border border-zinc-300 py-0.5 px-1 w-[40%] outline-none rounded' name='min_score' placeholder='Min...' value={filter.min_score} onChange={e => handleScore(e)} />
                             <span className='bg-zinc-500 h-[1px] w-[2.5ch]'></span>
-                            <input type="number" className='border border-zinc-300 py-0.5 px-1 w-[40%] outline-none rounded' name='max_score' placeholder='Max...' value={filter.max_score} onChange={e => handleScore(e)} />
+                            <input type="number" className='border border-zinc-300 py-0.5 px-1 w-[40%] outline-none rounded' name='max_score' placeholder='Max...' value={filter.max_score} onChange={e => handleScore(e)} /> */}
+                            <Slider
+                                value={[filter.year_from, filter.year_to]}
+                                onChange={e => handleScore(e)}
+                                disableSwap
+                                sx={{color:'black', outline: 'none'}}
+                            />
                         </div>
                     </div>
-                    {/* <div className="w-full flex flex-col py-1 px-1 gap-y-1">
+                    <div className="w-full flex flex-col py-1 px-1 gap-y-1">
                         <span className='font-semibold'>Year</span>
                         <div className='flex flex-row gap-x-3 items-center justify-between'>
-                            <input type="number" className='border border-zinc-300 py-0.5 px-1 w-[40%] outline-none rounded' placeholder='From...' />
+                            <input type="number" className='border border-zinc-300 py-0.5 px-1 w-[40%] outline-none rounded' name='year_from' placeholder='From...' value={filter.year_from} onChange={e => handleYear(e)} />
                             <span className='bg-zinc-500 h-[1px] w-[2.5ch]'></span>
-                            <input type="number" className='border border-zinc-300 py-0.5 px-1 w-[40%] outline-none rounded' placeholder='To...' />
+                            <input type="number" className='border border-zinc-300 py-0.5 px-1 w-[40%] outline-none rounded' name='year_to' placeholder='To...' value={filter.year_to} onChange={e => handleYear(e)} />
                         </div>
-                    </div> */}
+                    </div>
                     <div className="w-full flex flex-col py-1 px-1 gap-y-2">
                         <span className='font-semibold'>Format</span>
                         <form className='grid grid-cols-2 items-center gap-y-2' onChange={e => handleRadios(e)}>

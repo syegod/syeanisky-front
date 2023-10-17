@@ -28,6 +28,8 @@ export default function Main() {
                         'genres_exclude': queryParams.get('genres_exclude') || null,
                         'min_score': queryParams.get('min_score') || 0,
                         'max_score': queryParams.get('max_score') || 10,
+                        'start_date': queryParams.get('year_from') ? queryParams.get('year_from') + '-01-01' : null,
+                        // 'end_date': queryParams.get('year_to') ? queryParams.get('year_to') + '-01-01' : null,
                         'type': queryParams.get('format') || null,
                         'status': queryParams.get('status') || null,
                         'sort': 'desc',
@@ -59,7 +61,7 @@ export default function Main() {
 
 
     return (
-        <div className="lg:container lg:px-32 mx-auto my-5 ">
+        <div className="lg:container xl:px-32 mx-auto my-5 ">
             <div className="relative flex flex-row gap-x-10 px-2">
                 <div className="lg:w-[80%] flex flex-col gap-y-5 mx-auto ">
                     <div className='text-zinc-800 flex flex-row w-full divide-x divide-zinc-300 border rounded border-zinc-300'>
