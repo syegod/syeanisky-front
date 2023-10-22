@@ -35,8 +35,10 @@ export default function Profile() {
             try {
                 const animeId = e.target.dataset?.anime;
                 const episodes = e.target.value;
-                const response = await axios.post('/change-episodes', {animeId, episodes});
-                console.log(response.data);
+                if (episodes) {
+                    const response = await axios.post('/change-episodes', { animeId, episodes });
+                    console.log(response.data);
+                }
             } catch (err) {
                 return console.log(err);
             }
@@ -51,15 +53,17 @@ export default function Profile() {
         }
     }
 
-    let ratingTimeout;  
+    let ratingTimeout;
     const updateRating = async (e) => {
         clearTimeout(ratingTimeout);
         ratingTimeout = setTimeout(async () => {
             try {
                 const animeId = e.target.dataset?.anime;
                 const rating = e.target.value;
-                const response = await axios.post('/change-rating', {animeId, rating});
-                console.log(response.data);
+                if (rating) {
+                    const response = await axios.post('/change-rating', { animeId, rating });
+                    console.log(response.data);
+                }
             } catch (err) {
                 return console.log(err);
             }
@@ -125,10 +129,10 @@ export default function Profile() {
                                                 <Link className='line-clamp-2 hover:underline' to={'/anime/' + e.anime?.mal_id}>{e.anime?.title}</Link>
                                             </td>
                                             <td>
-                                                <input type="number" defaultValue={e.rating} data-anime={e.anime.mal_id} className='w-[4ch] p-0 focus:ring-0 outline-none border-0 bg-transparent border-b text-center' onChange={e => {handleRating(e); updateRating(e)}} />
+                                                <input type="number" defaultValue={e.rating} data-anime={e.anime.mal_id} className='w-[4ch] p-0 focus:ring-0 outline-none border-0 bg-transparent border-b text-center' onChange={e => { handleRating(e); updateRating(e) }} />
                                             </td>
                                             <td>
-                                                <input type="number" defaultValue={e.episodes} data-anime_episodes={e.anime.episodes} data-anime={e.anime.mal_id} className='w-[4ch] p-0 focus:ring-0 outline-none border-0 bg-transparent border-b text-center' onChange={e => {handleEpisodes(e); updateEpisodes(e)}} />
+                                                <input type="number" defaultValue={e.episodes} data-anime_episodes={e.anime.episodes} data-anime={e.anime.mal_id} className='w-[4ch] p-0 focus:ring-0 outline-none border-0 bg-transparent border-b text-center' onChange={e => { handleEpisodes(e); updateEpisodes(e) }} />
                                             </td>
                                             <td>
                                                 {new Date(e.date).toLocaleDateString()}
