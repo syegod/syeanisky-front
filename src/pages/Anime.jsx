@@ -5,8 +5,10 @@ import CharacterCard from '../components/features/CharacterCard';
 import RelationCard from '../components/features/RelationCard';
 import AddToList from '../components/features/AddToList';
 import { AuthContext } from '../context';
+import { NotifContext } from '../components/features/NotificationContainer';
 
 export default function Anime() {
+    const addNotification = useContext(NotifContext);
     const { id } = useParams()
     const [anime, setAnime] = useState();
     const { isAuth } = useContext(AuthContext);
@@ -20,9 +22,9 @@ export default function Anime() {
                 const responseChars = await axios.get(`https://api.jikan.moe/v4/anime/${id}/characters`);
                 setAnimeCharacters(responseChars.data?.data);
                 setAnime(response?.data.data);
-                return;
             } catch (err) {
-                return console.log(err);
+                console.log(err);
+                addNotification(err.response.data.message || 'An error occurred. Try again. ', 'error');
             }
         }
         setLoading(true);

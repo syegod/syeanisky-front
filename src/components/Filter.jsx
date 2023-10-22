@@ -3,8 +3,11 @@ import { useLocation } from 'react-router-dom';
 import Checkbox from './features/Checkbox';
 import axios from 'axios';
 import {Slider} from '@mui/material'
+import { useContext } from 'react';
+import { NotifContext } from './features/NotificationContainer';
 
 export default function Filter({ }) {
+    const addNotification = useContext(NotifContext);
     const queryParams = new URLSearchParams(useLocation().search);
     const [allgenres, setAllGenres] = useState([]);
     const [filter, setFilter] = useState({
@@ -44,6 +47,7 @@ export default function Filter({ }) {
                 setAllGenres(response.data.data)
             } catch (err) {
                 console.log(err);
+                addNotification(err.response.data.message || 'An error occurred. Try again. ', 'error');
             }
         }
         getGenres();

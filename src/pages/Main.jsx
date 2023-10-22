@@ -3,9 +3,12 @@ import Card from "../components/features/Card";
 import axios from 'axios';
 import Filter from "../components/Filter";
 import { useLocation } from "react-router";
+import { useContext } from "react";
+import { NotifContext } from "../components/features/NotificationContainer";
 
 
 export default function Main() {
+    const addNotification = useContext(NotifContext);
     const [pagination, setPagination] = useState(null);
     const queryParams = new URLSearchParams(useLocation().search);
     const [data, setData] = useState([]);
@@ -41,7 +44,8 @@ export default function Main() {
             return;
         } catch (err) {
             setError('Some error occured.');
-            return;
+            console.log(err);
+            addNotification(err.response.data.message || 'An error occurred. Try again. ', 'error');
         }
     }
 

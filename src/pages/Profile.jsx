@@ -2,8 +2,10 @@ import React, { useContext, useEffect, useState } from 'react';
 import { AuthContext } from '../context';
 import { Link } from 'react-router-dom';
 import axios from '../axios';
+import {NotifContext} from '../components/features/NotificationContainer';
 
 export default function Profile() {
+    const addNotification = useContext(NotifContext);
     const { isAuth, userData } = useContext(AuthContext);
     const [slide, setSlide] = useState('watching');
     const [sort, setSort] = useState('rated');
@@ -40,7 +42,8 @@ export default function Profile() {
                     console.log(response.data);
                 }
             } catch (err) {
-                return console.log(err);
+                console.log(err);
+                addNotification(err.response.data.message || 'An error occurred. Try again. ', 'error');
             }
         }, 500);
     }
@@ -65,7 +68,8 @@ export default function Profile() {
                     console.log(response.data);
                 }
             } catch (err) {
-                return console.log(err);
+                console.log(err);
+                addNotification(err.response.data.message || 'An error occurred. Try again. ', 'error');
             }
         }, 500);
     }
@@ -82,8 +86,8 @@ export default function Profile() {
                 }
                 return;
             } catch (err) {
-                alert(err.message);
-                return;
+                console.log(err);
+                addNotification(err.response.data.message || 'An error occurred. Try again. ', 'error');
             }
         }
     }

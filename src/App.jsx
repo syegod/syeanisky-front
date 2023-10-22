@@ -8,6 +8,7 @@ import axios from "./axios";
 import Login from "./pages/Login";
 import Register from "./pages/Register";
 import Profile from "./pages/Profile";
+import NotificationContainer from "./components/features/NotificationContainer";
 
 function App() {
     const [udata, setUData] = useState(null);
@@ -27,22 +28,25 @@ function App() {
             } catch (err) {
                 console.log(err);
                 setLoading(false);
-            }    
+            }
         }
         getUserData();
     }, []);
     return (
         <AuthContext.Provider value={{
-            userData: udata, token, isAuth, state: loading ? 'loading' : 'loaded'}}>
-            <Layout>
-                <Routes>
-                    <Route path="*" element={<Main />} />
-                    <Route path="/anime/:id" element={<Anime />} />
-                    <Route path="/login" element={<Login />} />
-                    <Route path="/register" element={<Register />} />
-                    <Route path="/profile" element={<Profile />} />
-                </Routes>
-            </Layout>
+            userData: udata, token, isAuth, state: loading ? 'loading' : 'loaded'
+        }}>
+            <NotificationContainer>
+                <Layout>
+                    <Routes>
+                        <Route path="*" element={<Main />} />
+                        <Route path="/anime/:id" element={<Anime />} />
+                        <Route path="/login" element={<Login />} />
+                        <Route path="/register" element={<Register />} />
+                        <Route path="/profile" element={<Profile />} />
+                    </Routes>
+                </Layout>
+            </NotificationContainer>
         </AuthContext.Provider>
     );
 }

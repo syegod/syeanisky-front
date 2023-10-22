@@ -1,8 +1,11 @@
-import React, { useState } from 'react'
+import React, { useState, createContext } from 'react'
 import Notification from './Notification';
 
-const NotificationContainer = () => {
+export const NotifContext = createContext();
+
+const NotificationContainer = ({ children }) => {
     const [notifications, setNotifications] = useState([]);
+
 
     const closeNotification = (index) => {
         setNotifications((prevNotifications) =>
@@ -15,20 +18,21 @@ const NotificationContainer = () => {
             ...prevNotifications,
             { message, type },
         ]);
-        console.log(notifications);
     };
 
-    setTimeout(() => closeNotification(notifications.length-1), 5000);
+    setTimeout(() => closeNotification(notifications.length - 1), 5000);
 
     return (
-        <div className='fixed flex flex-col gap-y-3 inset-0 items-center justify-end pb-[5vh] '>
-            {
-                notifications.map((e, i) => {
-                    return <Notification key={i} message={e.message} type={e.type} onClose={() => closeNotification(i)} />
-                })
-            }
-            {/* <button onClick={() => addNotification('Lox', 'error')}>Click</button> */}
-        </div>
+        <NotifContext.Provider value={addNotification}>
+            {children}
+            <div className='fixed w-max h-max top-20 right-5 z-50'>
+                {
+                    notifications.map((e, i) => {
+                        return <Notification key={i} message={e.message} type={e.type} onClose={() => closeNotification(i)} />
+                    })
+                }
+            </div>
+        </NotifContext.Provider>
     )
 }
 
