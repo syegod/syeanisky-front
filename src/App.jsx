@@ -9,6 +9,7 @@ import Login from "./pages/Login";
 import Register from "./pages/Register";
 import Profile from "./pages/Profile";
 import NotificationContainer from "./components/features/NotificationContainer";
+import Index from "./pages/Index";
 
 function App() {
     const [udata, setUData] = useState(null);
@@ -44,6 +45,7 @@ function App() {
                         <Route path="/login" element={<Login />} />
                         <Route path="/register" element={<Register />} />
                         <Route path="/profile" element={<Profile />} />
+                        <Route path="/index" element={<Index />} />
                     </Routes>
                 </Layout>
             </NotificationContainer>

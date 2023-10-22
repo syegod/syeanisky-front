@@ -5,6 +5,7 @@ import Filter from "../components/Filter";
 import { useLocation } from "react-router";
 import { useContext } from "react";
 import { NotifContext } from "../components/features/NotificationContainer";
+import getDay from "../utils/getDay";
 
 
 export default function Main() {

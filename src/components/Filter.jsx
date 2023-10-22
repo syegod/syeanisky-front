@@ -15,7 +15,7 @@ export default function Filter({ }) {
         score: [0, 10],
         format: '',
         status: '',
-        year: [1990, 2030],
+        year: [1970, 2030],
         your_lists: ''
     });
     const [opened, setOpened] = useState('main');
