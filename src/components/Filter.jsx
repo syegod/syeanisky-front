@@ -16,12 +16,12 @@ export default function Filter({ }) {
         format: '',
         status: '',
         year: [1970, 2030],
-        your_lists: ''
+        your_lists: '',
+        season: ''
     });
     const [opened, setOpened] = useState('main');
 
     function handleReset() {
-        // console.log(filter);
         window.location = '/';
     }
 
@@ -184,6 +184,28 @@ export default function Filter({ }) {
                             </div>
                         </form>
                     </div>
+                    <div className="w-full flex flex-col py-1 px-1 gap-y-2">
+                        <span className='font-semibold'>Season</span>
+                        <form className='grid grid-cols-2 items-center gap-y-2' onChange={e => handleRadios(e)}>
+                            <div className='flex flex-row gap-x-1 items-center'>
+                                <input type='radio' name='season' value={'winter'} id='season1' className='outline-none focus:ring-0 text-zinc-900' checked={filter.season === 'winter'} />
+                                <label htmlFor='season1'>Winter</label>
+                            </div>
+                            <div className='flex flex-row gap-x-1 items-center'>
+                                <input type='radio' name='season' value={'spring'} id='season2' className='outline-none focus:ring-0 text-zinc-900' checked={filter.season === 'spring'} />
+                                <label htmlFor='season2'>Spring</label>
+                            </div>
+                            <div className='flex flex-row gap-x-1 items-center'>
+                                <input type='radio' name='season' value={'summer'} id='season3' className='outline-none focus:ring-0 text-zinc-900' checked={filter.season === 'summer'} />
+                                <label htmlFor='season3'>Summer</label>
+                            </div>
+                            <div className='flex flex-row gap-x-1 items-center'>
+                                <input type='radio' name='season' value={'fall'} id='season4' className='outline-none focus:ring-0 text-zinc-900' checked={filter.season === 'fall'} />
+                                <label htmlFor='season4'>Fall</label>
+                            </div>
+                        </form>
+                    </div>
+
                     {/* <div className="w-full flex flex-col py-1 px-1 gap-y-2">
                         <span className='font-semibold'>Your lists</span>
                         <form className='grid grid-cols-1 items-center gap-y-2' onChange={e => handleRadios(e)}>

@@ -40,12 +40,12 @@ function App() {
             <NotificationContainer>
                 <Layout>
                     <Routes>
-                        <Route path="*" element={<Main />} />
+                        <Route path="/anime" element={<Main />} />
                         <Route path="/anime/:id" element={<Anime />} />
                         <Route path="/login" element={<Login />} />
                         <Route path="/register" element={<Register />} />
                         <Route path="/profile" element={<Profile />} />
-                        <Route path="/index" element={<Index />} />
+                        <Route path="*" element={<Index />} />
                     </Routes>
                 </Layout>
             </NotificationContainer>
