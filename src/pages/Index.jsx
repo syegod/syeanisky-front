@@ -6,8 +6,8 @@ import { NotifContext } from '../components/features/NotificationContainer';
 import Card from '../components/features/Card';
 
 const Index = () => {
-    const [seasonOpened, setSeasonOpened] = useState(false);
-    const [scheduleOpened, setScheduleOpened] = useState(false);
+    // const [seasonOpened, setSeasonOpened] = useState(false);
+    // const [scheduleOpened, setScheduleOpened] = useState(false);
     const [scheduleList, setScheduleList] = useState([]);
     const [seasonList, setSeasonList] = useState([]);
     const addNotification = useContext(NotifContext);
@@ -77,9 +77,9 @@ const Index = () => {
                 <div className='flex flex-col gap-y-2 w-full'>
                     <div className='w-full bg-zinc-200 border-l-4 border-zinc-400 py-1 px-3 text-xl font-bold rounded-r-md flex flex-row justify-between items-center'>
                         <span>Today's releases</span>
-                        <button class={`material-symbols-outlined ${scheduleOpened && 'rotate-90 duration-100'}`} onClick={() => setScheduleOpened(prev => !prev)}>
+                        {/* <button class={`material-symbols-outlined ${scheduleOpened && 'rotate-90 duration-100'}`} onClick={() => setScheduleOpened(prev => !prev)}>
                             chevron_right
-                        </button>
+                        </button> */}
                     </div>
                     <div className='flex flex-wrap gap-x-3 w-full gap-y-3 justify-center'>
                         {scheduleList.map((e, i) => {
@@ -92,9 +92,9 @@ const Index = () => {
                 <div className='flex flex-col gap-y-2 w-full'>
                     <div className='w-full bg-zinc-200 border-l-4 border-zinc-400 py-1 px-3 text-xl font-bold rounded-r-md flex flex-row justify-between items-center'>
                         <span>Seasonal anime</span>
-                        <button class={`material-symbols-outlined ${seasonOpened && 'rotate-90 duration-100'}`} onClick={() => setSeasonOpened(prev => !prev)}>
+                        {/* <button class={`material-symbols-outlined ${seasonOpened && 'rotate-90 duration-100'}`} onClick={() => setSeasonOpened(prev => !prev)}>
                             chevron_right
-                        </button>
+                        </button> */}
                     </div>
                     <div className='flex flex-wrap gap-x-3 w-full gap-y-3 justify-center'>
                         {seasonList.map((e, i) => {
