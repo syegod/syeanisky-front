@@ -184,7 +184,7 @@ export default function Filter({ }) {
                             </div>
                         </form>
                     </div>
-                    <div className="w-full flex flex-col py-1 px-1 gap-y-2">
+                    {/* <div className="w-full flex flex-col py-1 px-1 gap-y-2">
                         <span className='font-semibold'>Season</span>
                         <form className='grid grid-cols-2 items-center gap-y-2' onChange={e => handleRadios(e)}>
                             <div className='flex flex-row gap-x-1 items-center'>
@@ -204,7 +204,7 @@ export default function Filter({ }) {
                                 <label htmlFor='season4'>Fall</label>
                             </div>
                         </form>
-                    </div>
+                    </div> */}
 
                     {/* <div className="w-full flex flex-col py-1 px-1 gap-y-2">
                         <span className='font-semibold'>Your lists</span>
