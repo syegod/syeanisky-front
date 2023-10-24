@@ -2,34 +2,78 @@ import React, { useContext, useEffect, useState } from 'react';
 import { AuthContext } from '../context';
 import { Link } from 'react-router-dom';
 import axios from '../axios';
+import {NotifContext} from '../components/features/NotificationContainer';
 
 export default function Profile() {
+    const addNotification = useContext(NotifContext);
     const { isAuth, userData } = useContext(AuthContext);
+    const [slide, setSlide] = useState('watching');
     const [sort, setSort] = useState('rated');
-    if (userData) {
-        console.log(Object.entries(userData?.lists));
+    const [updatedList, setUpdatedList] = useState([]);
+
+    useEffect(() => {
+        setUpdatedList(userData?.list);
+    }, [userData]);
+
+    const handleSlide = async (e) => {
+        setSlide(e.target.name);
     }
 
-    const handleRating = async (e) => {
-        if(e.target.value > 10){
-            e.target.value = 10;
-        } else if(e.target.value < 0){
-            e.target.value = 1;
+    const handleEpisodes = async (e) => {
+        const max_eps = Number(e.target.dataset?.anime_episodes);
+        console.log(max_eps);
+        if (e.target.value < 0) {
+            e.target.value = 0;
         }
-        if(e.target.value && e.target.value.length < 3 && e.target.value > 0){
+        if (e.target.value > max_eps) {
+            e.target.value = max_eps;
+        }
+    }
+
+    let epsTimeout;
+    const updateEpisodes = async (e) => {
+        clearTimeout(epsTimeout);
+        epsTimeout = setTimeout(async () => {
             try {
-                const anime = JSON.parse(e.target.dataset?.anime);
-                const list = e.target.dataset?.list;
-                const rating = e.target.value;
-                const response = await axios.post('/change-rating', {anime, list, rating});
-                if(response.status === 202){
+                const animeId = e.target.dataset?.anime;
+                const episodes = e.target.value;
+                if (episodes) {
+                    const response = await axios.post('/change-episodes', { animeId, episodes });
                     console.log(response.data);
                 }
             } catch (err) {
-                return console.log(err);
+                console.log(err);
+                addNotification(err.response.data.message || 'An error occurred. Try again. ', 'error');
             }
+        }, 500);
+    }
+
+    const handleRating = async (e) => {
+        if (e.target.value > 10) {
+            e.target.value = 10;
+        } else if (e.target.value < 0) {
+            e.target.value = 1;
         }
     }
+
+    let ratingTimeout;
+    const updateRating = async (e) => {
+        clearTimeout(ratingTimeout);
+        ratingTimeout = setTimeout(async () => {
+            try {
+                const animeId = e.target.dataset?.anime;
+                const rating = e.target.value;
+                if (rating) {
+                    const response = await axios.post('/change-rating', { animeId, rating });
+                    console.log(response.data);
+                }
+            } catch (err) {
+                console.log(err);
+                addNotification(err.response.data.message || 'An error occurred. Try again. ', 'error');
+            }
+        }, 500);
+    }
+
 
     const handleRemove = async (e) => {
         const anime = JSON.parse(e.target.dataset?.anime);
@@ -42,8 +86,8 @@ export default function Profile() {
                 }
                 return;
             } catch (err) {
-                alert(err.message);
-                return;
+                console.log(err);
+                addNotification(err.response.data.message || 'An error occurred. Try again. ', 'error');
             }
         }
     }
@@ -60,54 +104,57 @@ export default function Profile() {
                     <span className='text-2xl font-semibold'>@{userData?.username}</span>
                 </div>
                 <hr className='w-full' />
-                <div className='flex flex-col gap-y-6'>
-                    {userData && Object.entries(userData?.lists).map(e =>
-                        <div className='flex flex-col'>
-                            <span className='text-xl py-1 font-semibold px-2 bg-zinc-200'>{e[0].split('').splice(0, 1)[0].toUpperCase() + e[0].split('').splice(1, e[0].length - 1).join('')}</span>
-                            <table className='table-fixed w-full text-sm border-collapse text-center font-medium'>
-                                <thead className='border-b'>
-                                    <tr className=''>
-                                        <th className='w-[5%]'></th>
-                                        <th className={`cursor-pointer ${sort === 'title' && 'underline underline-offset-2'} py-2`} onClick={() => setSort('title')}>
-                                            <span>Title</span>
-                                        </th>
-                                        <th className={`cursor-pointer ${sort === 'date' && 'underline underline-offset-2'} py-2 w-2/12`} onClick={() => setSort('date')}>
-                                            <span>Date added</span>
-                                        </th>
-                                        {/* <th className={`cursor-pointer ${sort === 'date' && 'underline underline-offset-2'} py-2 w-1/12`} onClick={() => setSort('episodes')}>
-                                            <span>Episodes</span>
-                                        </th> */}
-                                        <th className={`cursor-pointer ${sort === 'rated' && 'underline underline-offset-2'} py-2 w-1/12`} onClick={() => setSort('rated')}>
-                                            <span>Rated</span>
-                                        </th>
-                                    </tr>
-                                </thead>
-                                <tbody className='text-zinc-600 relative py-3'>
-                                    {e[1].length > 0 ? e[1].map((i, index) => (
-                                        <tr className='border-b'>
-                                            <td><button className="material-symbols-outlined select-none" data-anime={JSON.stringify(i.anime)} data-list={e[0]} onClick={e => handleRemove(e)}>close</button></td>
-                                            <td className='p-3'>
-                                                <Link className='hover:underline underline-offset-2' to={'/anime/' + i.anime?.mal_id}>{i.anime?.title_english}</Link>
+                <div className='mt-5 flex flex-col gap-y-0 w-full'>
+                    <div className='flex flex-row w-full justify-between px-5 border-b-2'>
+                        <button className={`${slide === 'watching' && 'border-b-2 border-zinc-900'}`} name={'watching'} onClick={e => handleSlide(e)}>Watching</button>
+                        <button className={`${slide === 'viewed' && 'border-b-2 border-zinc-900'}`} name={'viewed'} onClick={e => handleSlide(e)}>Viewed</button>
+                        <button className={`${slide === 'favorite' && 'border-b-2 border-zinc-900'}`} name={'favorite'} onClick={e => handleSlide(e)}>Favorite</button>
+                        <button className={`${slide === 'planned' && 'border-b-2 border-zinc-900'}`} name={'planned'} onClick={e => handleSlide(e)}>Plan to watch</button>
+                        <button className={`${slide === 'dropped' && 'border-b-2 border-zinc-900'}`} name={'dropped'} onClick={e => handleSlide(e)}>Dropped</button>
+                        <button className={`${slide === 'onhold' && 'border-b-2 border-zinc-900'}`} name={'onhold'} onClick={e => handleSlide(e)}>On hold</button>
+                    </div>
+                    {updatedList && updatedList.filter(e => e.list === slide).length > 0 ? (
+                        <table className='table-fixed mt-5 text-center'>
+                            <thead className='border-b'>
+                                <tr className='font-thin text-center'>
+                                    <th className='w-[50%] font-medium'>Title</th>
+                                    <th className='font-medium'>Rating</th>
+                                    <th className='font-medium'>Episodes</th>
+                                    <th className='font-medium'>Date added</th>
+                                    <th></th>
+                                </tr>
+                            </thead>
+                            <tbody className=''>
+                                {updatedList
+                                    .filter(e => e.list === slide)
+                                    .map(e => (
+                                        <tr className='border-b even:bg-white odd:bg-slate-100' key={e.anime.mal_id}>
+                                            <td className='w-[50%] py-2'>
+                                                <Link className='line-clamp-2 hover:underline' to={'/anime/' + e.anime?.mal_id}>{e.anime?.title}</Link>
                                             </td>
-                                            <td>{new Date(i.date).toLocaleDateString()}</td>
-                                            {/* <td className='flex flex-row items-center justify-center'>
-                                                <button className='text-lg'>-</button>
-                                                <input type="number" className='w-[4ch] outline-none text-center' maxLength={4} defaultValue={i.episodes_watched}/>
-                                                <button className='text-lg'>+</button>
-                                            </td> */}
                                             <td>
-                                                <input type="number" defaultValue={i.rated || '0'} data-list={e[0]} data-anime={JSON.stringify(i.anime)} onChange={e => handleRating(e)} className='outline-none border-0 p-0 border-b focus:ring-0 w-[2ch] text-center text-zinc-900 appearance-none'/>
+                                                <input type="number" defaultValue={e.rating} data-anime={e.anime.mal_id} className='w-[4ch] p-0 focus:ring-0 outline-none border-0 bg-transparent border-b text-center' onChange={e => { handleRating(e); updateRating(e) }} />
+                                            </td>
+                                            <td>
+                                                <input type="number" defaultValue={e.episodes} data-anime_episodes={e.anime.episodes} data-anime={e.anime.mal_id} className='w-[4ch] p-0 focus:ring-0 outline-none border-0 bg-transparent border-b text-center' onChange={e => { handleEpisodes(e); updateEpisodes(e) }} />
+                                            </td>
+                                            <td>
+                                                {new Date(e.date).toLocaleDateString()}
+                                            </td>
+                                            <td>
+                                                <button className="material-symbols-outlined select-none" onClick={e => handleRemove(e)} data-anime={JSON.stringify(e.anime)} data-list={e.list}>
+                                                    close
+                                                </button>
                                             </td>
                                         </tr>
                                     ))
-                                        :
-                                        <div className='w-full absolute'>
-                                            No items found.
-                                        </div>
-                                    }
-                                </tbody>
-                            </table>
-                        </div>)}
+                                }
+                            </tbody>
+                        </table>) : (
+                        <div className='w-full pt-5 text-center'>
+                            No data to display.
+                        </div>
+                    )}
                 </div>
             </div>
         </div>

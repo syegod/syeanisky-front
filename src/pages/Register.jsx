@@ -1,9 +1,11 @@
-import React, { useContext, useState } from 'react'
-import { Link, redirect } from 'react-router-dom'
+import React, { useContext, useState } from 'react';
+import { Link, redirect } from 'react-router-dom';
 import { AuthContext } from '../context';
-import axios from '../axios'
+import {NotifContext} from '../components/features/NotificationContainer';
+import axios from '../axios';
 
 export default function Register() {
+    const addNotification = useContext(NotifContext)
     const [form, setForm] = useState({
         username: '', password: ''
     });
@@ -24,6 +26,7 @@ export default function Register() {
             }
         } catch (err) {
             console.log(err);
+            addNotification(err.response.data.message || 'An error occurred. Try again. ', 'error')
         }
     }
 

@@ -8,6 +8,10 @@ import axios from "./axios";
 import Login from "./pages/Login";
 import Register from "./pages/Register";
 import Profile from "./pages/Profile";
+import NotificationContainer from "./components/features/NotificationContainer";
+import Index from "./pages/Index";
+import Forum from "./pages/Forum";
+import AddNewTopic from "./pages/AddNewTopic";
 
 function App() {
     const [udata, setUData] = useState(null);
@@ -27,22 +31,28 @@ function App() {
             } catch (err) {
                 console.log(err);
                 setLoading(false);
-            }    
+            }
         }
         getUserData();
     }, []);
     return (
         <AuthContext.Provider value={{
-            userData: udata, token, isAuth, state: loading ? 'loading' : 'loaded'}}>
-            <Layout>
-                <Routes>
-                    <Route path="*" element={<Main />} />
-                    <Route path="/anime/:id" element={<Anime />} />
-                    <Route path="/login" element={<Login />} />
-                    <Route path="/register" element={<Register />} />
-                    <Route path="/profile" element={<Profile />} />
-                </Routes>
-            </Layout>
+            userData: udata, token, isAuth, state: loading ? 'loading' : 'loaded'
+        }}>
+            <NotificationContainer>
+                <Layout>
+                    <Routes>
+                        <Route path="/anime" element={<Main />} />
+                        <Route path="/anime/:id" element={<Anime />} />
+                        <Route path="/login" element={<Login />} />
+                        <Route path="/register" element={<Register />} />
+                        {/* <Route path="/forum" element={<Forum />}/> */}
+                        {/* <Route path="/forum/addnew" element={<AddNewTopic />}/> */}
+                        <Route path="/profile" element={<Profile />} />
+                        <Route path="*" element={<Index />} />
+                    </Routes>
+                </Layout>
+            </NotificationContainer>
         </AuthContext.Provider>
     );
 }
