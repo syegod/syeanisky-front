@@ -10,8 +10,7 @@ import Register from "./pages/Register";
 import Profile from "./pages/Profile";
 import NotificationContainer from "./components/features/NotificationContainer";
 import Index from "./pages/Index";
-import Forum from "./pages/Forum";
-import AddNewTopic from "./pages/AddNewTopic";
+
 
 function App() {
     const [udata, setUData] = useState(null);
