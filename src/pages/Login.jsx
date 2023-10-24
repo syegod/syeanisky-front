@@ -2,8 +2,10 @@ import React, { useContext, useState } from 'react'
 import { Link, redirect } from 'react-router-dom'
 import axios from '../axios';
 import { AuthContext } from '../context';
+import { NotifContext } from '../components/features/NotificationContainer';
 
 export default function Login() {
+    const addNotification = useContext(NotifContext);
     const [form, setForm] = useState({
         username: '', password: ''
     });
@@ -23,6 +25,7 @@ export default function Login() {
             }
         } catch (err) {
             console.log(err);
+            addNotification(err.response.data.message, 'error');
         }
     }
 
@@ -48,6 +51,7 @@ export default function Login() {
                     <Link to={'/register'} className='underline'>Dont have an account?</Link>
                 </div>
             </form>
+            
         </div>
     )
 }
