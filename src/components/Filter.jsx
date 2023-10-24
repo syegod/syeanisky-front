@@ -86,7 +86,7 @@ export default function Filter({ }) {
             if (i[1] === "include") genres_include.push(i[0])
             else genres_exclude.push(i[0]);
         }
-        const url = `/?genres_include=${genres_include.join(',')}&genres_exclude=${genres_exclude.join(',')}&format=${filter.format || ''}&status=${filter.status || ''}&min_score=${filter.score[0] || 0}&max_score=${filter.score[1] || 10}&year_from=${filter.year[0] || null}&year_to=${filter.year[1] || null}`
+        const url = `/anime?genres_include=${genres_include.join(',')}&genres_exclude=${genres_exclude.join(',')}&format=${filter.format || ''}&status=${filter.status || ''}&min_score=${filter.score[0] || 0}&max_score=${filter.score[1] || 10}&year_from=${filter.year[0] || null}&year_to=${filter.year[1] || null}`
         // console.log(filter);
         // console.log(url);   
         window.location = url;
