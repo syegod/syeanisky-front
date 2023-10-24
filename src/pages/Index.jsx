@@ -64,8 +64,8 @@ const Index = () => {
 
     return (
         <div className='flex flex-col container xl:px-24 mx-auto mt-5 gap-y-10 items-center'>
-            <div className='text-left text-lg'>
-                <p className='text-2xl font-bold text-center'>Syeanisky - Your Source for Tracking Anime Online</p>
+            <div className='text-lg text-center'>
+                <p className='text-2xl font-bold '>Syeanisky - Your Source for Tracking Anime Online</p>
                 <br />
                 <p>
                     For many years, Japanese animation, known as anime, has captured the hearts of fans worldwide. This unique genre is celebrated for its vibrant storytelling, original art style, and intense emotions.
