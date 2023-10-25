@@ -102,8 +102,8 @@ export default function Anime() {
                             <div className='flex flex-col bg-white p-3 rounded gap-y-5'>
                                 <span dangerouslySetInnerHTML={{ __html: anime.synopsis?.replace(/\n/g, "<br>").replace("<br><br>[Written by MAL Rewrite]", '') }}></span>
                                 <div className='flex flex-wrap gap-x-3 gap-y-2'>
-                                    {anime.genres?.length > 0 && anime.genres.map(e => <a href={`/?genres_include=${e.mal_id}`} className='border px-2 rounded-sm cursor-pointer text-zinc-500'>{e?.name}</a>)}
-                                    {anime.themes?.length > 0 && anime.themes.map(e => <a href={`/?genres_include=${e.mal_id}`} className='border px-2 rounded-sm cursor-pointer text-zinc-500'>{e?.name}</a>)}
+                                    {anime.genres?.length > 0 && anime.genres.map(e => <a href={`/anime?genres_include=${e.mal_id}`} className='border px-2 rounded-sm cursor-pointer text-zinc-500'>{e?.name}</a>)}
+                                    {anime.themes?.length > 0 && anime.themes.map(e => <a href={`/anime?genres_include=${e.mal_id}`} className='border px-2 rounded-sm cursor-pointer text-zinc-500'>{e?.name}</a>)}
                                 </div>
                                 <div className='flex flex-wrap gap-x-[5%] gap-y-5'>
                                     {anime_characters?.length > 0 && anime_characters.map(e => e.role === "Main" && <CharacterCard char={e.character} />)}

@@ -22,7 +22,17 @@ export default function Filter({ }) {
     const [opened, setOpened] = useState('main');
 
     function handleReset() {
-        window.location = '/';
+        window.location = '/anime';
+    }
+
+    async function getGenres() {
+        try {
+            const response = await axios.get('https://api.jikan.moe/v4/genres/anime');
+            setAllGenres(response.data.data)
+        } catch (err) {
+            console.log(err);
+            addNotification(err.response.data.message || 'An error occurred. Try again. ', 'error');
+        }
     }
 
     useEffect(() => {
@@ -41,16 +51,7 @@ export default function Filter({ }) {
         for (var i of genres_exclude) {
             filter.genres.set(Number(i), "exclude");
         }
-        async function getGenres() {
-            try {
-                const response = await axios.get('https://api.jikan.moe/v4/genres/anime');
-                setAllGenres(response.data.data)
-            } catch (err) {
-                console.log(err);
-                addNotification(err.response.data.message || 'An error occurred. Try again. ', 'error');
-            }
-        }
-        getGenres();
+        setTimeout(async () => await getGenres(), 1000)
     }, [])
 
     function handleGenres(value, type) {
